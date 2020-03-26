@@ -81,7 +81,7 @@ SRC_URI = "npm://registry.npmjs.org/;name=cute-files;version=${PV} \
 
 NPM_SHRINKWRAP := "${THISDIR}/${PN}/npm-shrinkwrap.json"
 
-inherit npm
+inherit npm systemd
 
 # Must be set after inherit npm since that itself sets S
 S = "${WORKDIR}/npmpkg"
@@ -145,12 +145,11 @@ LICENSE_${PN}-express = "MIT"
 LICENSE_${PN} = "MIT"
 
 # Start cute-files on boot
-
 SYSTEMD_SERVICE_${PN} = " \
 	cute-files.service \
 	"
 
-do_install() {
+do_install_append() {
 	install -d ${D}${systemd_unitdir}/system
 	install -m 0644 ${WORKDIR}/cute-files.service ${D}${systemd_unitdir}/system/
 }
