@@ -1,0 +1,8 @@
+[Unit]
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/cute-files
+
+[Install]
+WantedBy=multi-user.target

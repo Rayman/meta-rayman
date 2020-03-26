@@ -75,7 +75,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=71d98c0a1db42956787b1909c74a86ca \
                     file://node_modules/content-disposition/LICENSE;md5=c6e0ce1e688c5ff16db06b7259e9cd20 \
                     file://node_modules/commander/LICENSE;md5=25851d4d10d6611a12d5571dab945a00"
 
-SRC_URI = "npm://registry.npmjs.org/;name=cute-files;version=${PV}"
+SRC_URI = "npm://registry.npmjs.org/;name=cute-files;version=${PV} \
+	file://cute-files.service \
+	"
 
 NPM_SHRINKWRAP := "${THISDIR}/${PN}/npm-shrinkwrap.json"
 
@@ -142,4 +144,16 @@ LICENSE_${PN}-express-vary = "MIT"
 LICENSE_${PN}-express = "MIT"
 LICENSE_${PN} = "MIT"
 
+# Start cute-files on boot
+
+SYSTEMD_SERVICE_${PN} = " \
+	cute-files.service \
+	"
+
+do_install() {
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/cute-files.service ${D}${systemd_unitdir}/system/
+}
+
+FILES_${PN} += "${systemd_unitdir}/system/cute-files.service"
 
